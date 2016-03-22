@@ -157,6 +157,20 @@ public class SwipeDeck extends FrameLayout {
         throw new UnsupportedOperationException("Not supported");
     }
 
+    public View getTopView(){
+        int childCount = getChildCount();
+        final View child;
+        //TODO: maybe find a better solution this is kind of hacky
+        //if there's an extra card on screen that means the top card is still being animated
+        //in that case setup the next card along
+        if (childCount == (NUMBER_OF_CARDS + 1)) {
+            child = getChildAt(getChildCount() - 2);
+        } else {
+            child = getChildAt(getChildCount() - 1);
+        }
+        return child;
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
@@ -328,16 +342,7 @@ public class SwipeDeck extends FrameLayout {
 
     private void setupTopCard() {
 
-        int childCount = getChildCount();
-        final View child;
-        //TODO: maybe find a better solution this is kind of hacky
-        //if there's an extra card on screen that means the top card is still being animated
-        //in that case setup the next card along
-        if (childCount == (NUMBER_OF_CARDS + 1)) {
-            child = getChildAt(getChildCount() - 2);
-        } else {
-            child = getChildAt(getChildCount() - 1);
-        }
+        final View child = getTopView();
 
         //this calculation is to get the correct position in the adapter of the current top card
         //the card position on setup top card is currently always the bottom card in the view
