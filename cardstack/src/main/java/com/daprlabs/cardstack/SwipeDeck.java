@@ -249,17 +249,10 @@ public class SwipeDeck extends FrameLayout {
         //ensure new card is under the deck at the beginning
         child.setY(paddingTop);
 
-        //every time we add and measure a child refresh the children on screen and order them
-        ArrayList<View> children = new ArrayList<>();
-        children.add(child);
+        addViewInLayout(child, 0, params, true);
+
         for (int i = 0; i < getChildCount(); ++i) {
-            children.add(getChildAt(i));
-        }
-
-        removeAllViews();
-
-        for (View c : children) {
-            addViewInLayout(c, -1, params, true);
+            View c = getChildAt(i);
             int itemWidth = getWidth() - (paddingLeft + paddingRight);
             int itemHeight = getHeight() - (paddingTop + paddingBottom);
             c.measure(MeasureSpec.EXACTLY | itemWidth, MeasureSpec.EXACTLY | itemHeight); //MeasureSpec.UNSPECIFIED
@@ -269,6 +262,7 @@ public class SwipeDeck extends FrameLayout {
             if (leftImageResource != 0) child.findViewById(leftImageResource).setAlpha(0);
             if (rightImageResource != 0) child.findViewById(rightImageResource).setAlpha(0);
         }
+
         setZTranslations();
     }
 
